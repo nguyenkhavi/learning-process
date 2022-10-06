@@ -20,9 +20,8 @@ const createReact = function () {
 
 
   function render(Component, rootEle) {
-    console.log({hooks})
     if(firstRendering){
-      root = rootEle
+      root = rootEle // ! Not sure, it related to Virtual DOM
     }
     currentComponent = Component;
     const instance = Component();
@@ -30,17 +29,11 @@ const createReact = function () {
     firstRendering = false;
     index = 0
     
-    // setInterval(()=>{
-    //   root.innerText = `Increment: ${instance.state.count}`
-    //   root.onclick = instance.props.onclick
-    // },60/1000)
-
-    
-
-    
+    // ! Under construction
+    // Implement Diff Algorithm
+    // ! ------------------
     root.innerText = `Increment: ${instance.state.count}`
     root.onclick = instance.props.onclick
-    
   }
 
   function useState(initialState) {
@@ -108,10 +101,20 @@ function Component() {
   }
 
   const handleCountChange = () => {
-    // setCount(count => count + 1)
-    // setCount(count => count + 1)
     setCount(count => count + 1)
+
+      console.log({ count });
+
+    setCount(count => count + 1)
+    setCount(count => count + 1)
+
+    // setCount(count + 1)
+    // setCount(count + 1)
+    // setCount(count + 1)
   }
+
+
+
   console.log({ count });
 
 
