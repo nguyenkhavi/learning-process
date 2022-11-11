@@ -9,7 +9,9 @@
     "run-solid": "tsc solid.ts && node solid.js",
     "react": "tsc react.ts && node react.js",
     "rxjs": "node rxJS/rxJS.js",
-    "ucs": "node algo/uniform-cost-search.js"
+    "ucs": "node algo/uniform-cost-search.js",
+    "bf": "node algo/bloom-filter.js"
+
   },
   "author": "",
   "license": "ISC",
