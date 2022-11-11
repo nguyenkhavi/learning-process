@@ -49,7 +49,7 @@ type ABCD = RecursiveUnion<"a/b/c/d", "/">;
 
 //--------
 // import React from "react";
-import { TextStyle } from "react-native";
+import { ImageStyle, TextStyle, ViewStyle } from "react-native";
 
 type TConfig = { [key in keyof TextStyle]+?: Array<TextStyle[key]> };
 const config: TConfig = {
@@ -108,7 +108,7 @@ const globalStyles: TGlobalStyles = Object.keys(
 //     Title
 //   </Text>
 // );
-console.log(globalStyles.fs14);
+console.log(globalStyles.fs12fw500);
 
 // ---------------
 type Zero = "zero"
@@ -146,3 +146,84 @@ type Equals<A, B> = A extends Succ<infer SA>
     : false
 
 type areEqual = Equals<Zero, MayBeZero>
+
+
+// TODO: Opaque
+type Opaque<TValue, TOpaque> = TValue & {
+  __: TOpaque;
+};
+
+type ValidEmail = Opaque<string, "ValidEmail">;
+
+const isValidEmail = (email: string): email is ValidEmail => {
+  return email.includes("@");
+};
+
+const createUser = async (user: { email: ValidEmail }) => {
+  // Pseudocode, creates a user in the database
+  return user;
+};
+
+export const onSubmit = async (values: { email: string }) => {
+  if (!isValidEmail(values.email)) {
+    throw new Error("Email is invalid");
+  }
+
+  await createUser({
+    email: values.email,
+  });
+};
+
+// TODO: createStyleGetter
+export const createStyleGetter = <TConfig extends Record<string, ViewStyle | TextStyle | ImageStyle>>(
+  config: TConfig,
+) => {
+  return (variant: keyof TConfig, ...otherClasses: (ViewStyle | TextStyle | ImageStyle)[]): string => {
+    return config[variant] + " " + otherClasses.join(" ");
+  };
+};
+
+const getButtonClasses = createStyleGetter({
+  primary: {
+    color: 'red'
+  
+  },
+  secondary: {},
+});
+
+const classes = getButtonClasses("primary", {width: 2});
+
+// ------------
+type RoleEnum = {
+  PREMIUM_ADMIN:'PREMIUM_ADMIN',
+  ADMIN:"ADMIN",
+  PREMIUM_USER:'PREMIUM_USER',
+  USER:"USER"
+}
+
+type ValueOfKeysStartWith<Obj> = {
+  [K in Extract<keyof Obj, `PREMIUM${string}`>]: Obj[K]
+}[Extract<keyof Obj, `PREMIUM${string}`>]
+
+type ValueUnion = ValueOfKeysStartWith<RoleEnum>
+
+
+// ---------
+type T1 = "sx" | "sm" | string
+const t1: T1 = ""
+// ! Not autocomplete when call t1 === 
+type T2 = "sx" | "sm" | Omit<string,"sx" | "sm">
+const t2: T2 = "sm"
+
+// -----------
+type Letters  = "a" | "b" | "c"
+
+type RemoveLetter<T, L extends string[number]> = T extends L ? never : T
+type ReplaceLetter<T, L extends string[number], R extends string[number]> = T extends L ? R : T
+
+
+
+
+type AfterReplace = ReplaceLetter<Letters, "c", "d">
+
+type LetterWithoutC = RemoveLetter<Letters, "c">

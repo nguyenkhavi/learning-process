@@ -128,3 +128,18 @@ const _handleScroll = ({ nativeEvent }:{nativeEvent: NativeScrollEvent}) => {
  * ! Do all of these things. You stuck at side-effect, at least make it obvious
  */
 
+// ? Higher-order function: A function that take one or mare functions as arguments, or return one or more function.
+const hof = (cb, arg) => {
+  cb(arg)
+}
+hof(console.log, "Hello")
+
+
+// TODO: Expand for pure components, HOCs
+
+/**
+ * * Immutability
+ */
+
+// ? Assignment immutability
+// ? Value immutability
